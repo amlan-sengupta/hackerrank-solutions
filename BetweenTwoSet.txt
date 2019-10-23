@@ -1,0 +1,87 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+    public static int getTotalX(List<Integer> a, List<Integer> b) {
+    ArrayList<Integer> c=new ArrayList<>();
+        int i,j;
+        for(i=0;i<a.size();i++){
+            c.add(a.get(i));
+        }
+        for(j=0;j<b.size();j++){
+            c.add(b.get(j));
+        }
+        int amax=0;
+        int bmin=Integer.MAX_VALUE;
+        for(i=0;i<a.size();i++){
+            if(a.get(i)>amax){
+                amax=a.get(i);
+            }
+        }
+        for(j=0;j<b.size();j++){
+            if(bmin>b.get(j)){
+                bmin=b.get(j);
+            }
+        }
+        int count=0;
+        for(i=amax;i<=bmin;i++){
+            int tcount=0;
+
+            for(j=0;j<c.size();j++){
+                if(i>=c.get(j)){
+                    if(i%(c.get(j))==0){
+                        tcount++;
+                    }
+                }
+                else{
+                    if((c.get(j)%i)==0){
+                        tcount++;
+                    }
+                }
+            }
+            if(tcount==c.size()){
+                count++;
+            }
+        }
+        return count;
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        int n = Integer.parseInt(firstMultipleInput[0]);
+
+        int m = Integer.parseInt(firstMultipleInput[1]);
+
+        List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+            .map(Integer::parseInt)
+            .collect(toList());
+
+        List<Integer> brr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+            .map(Integer::parseInt)
+            .collect(toList());
+
+        int total = Result.getTotalX(arr, brr);
+
+        bufferedWriter.write(String.valueOf(total));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
